@@ -2,13 +2,12 @@ FROM node:alpine3.18 as build
 #Build App
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install --production
 COPY . .
 RUN npm run build
 # Serve with Nginx
-FROM nginx:alpine
-WORKDIR /user/share/nginx/html
-RUN rm -rf *
-COPY --from=build /app/build .
+FROM nginx:stable-alpine
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-ENTRYPOINT ["nginx", "-g","daemon off;"]
+
+CMD ["nginx", "-g","daemon off;"]
