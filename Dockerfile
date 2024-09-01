@@ -6,8 +6,8 @@ RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 # Serve with Nginx
-FROM nginx:1.23-alpine
-WORKDIR /usr/share/nginx/html
+FROM nginx:alpine
+WORKDIR /user/share/nginx/html
 RUN rm -rf *
 COPY --from=build /app/build .
 EXPOSE 80
